@@ -13,11 +13,15 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent agent;
 
     [SerializeField, Range(10, 100)]
-    private float health;
+    private float health = 10;
 
     void Start()
     {
         MoveToTarget();
+    }
+
+    private void Update()
+    {
     }
 
 
@@ -30,10 +34,20 @@ public class EnemyController : MonoBehaviour
         agent.SetDestination(currentTarget.transform.position);
     }
 
+    private void DestroySelf()
+    {
+        // Health has reached 0 or below, destroy the enemy
+        Destroy(gameObject);
+    }
+
     public void AlterHealth(float damage)
     {
         if (health - damage > 0) { health = 0; }
         else { health -= damage; }
+
+        Debug.Log("Health: " + health);
+
+        if (health == 0) { DestroySelf(); }
     }
 
 }
